@@ -1,5 +1,5 @@
 let squares = [null, null, null, null, null, null, null, null, null];
-let xIsNext = true;
+let xIsNext = false; 
 
 /* All the possible ways to win, each element contains the indicies of squares to check */
 /* If squares[0], squares[1], squares[2] all contain the same value, that player has won, for each set of 3 numbers in the list */
@@ -57,10 +57,14 @@ function renderBoard() {
     status.text(playerStatus);
   }
 }
-
+function steve(){
+let mike=Math.floor(Math.random()*squares.length)
+ while (squares[mike]) {mike=Math.floor(Math.random()*squares.length)} 
+squares[mike]="x"
+}
 $(document).click((event) => {
   const target = event.target;
-  // Check if click on sqaure
+  // Check if click on square
   if (target.className == "square") {
     // Check if the square has no value
     let index = +target.dataset.index;
@@ -71,7 +75,8 @@ $(document).click((event) => {
       squares[index] = 'O';
     }
     target.innerText = squares[index];
-    xIsNext = !xIsNext;
+    
+    steve()
     renderBoard();
   }
 });

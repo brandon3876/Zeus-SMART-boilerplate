@@ -4,9 +4,9 @@ $(document).ready(function() {
   //////////////////////////////
   // Setup the game
   /////////////////////////////
-  let secretsList = ["cat"]; // <------------ enter more words here
+  let secretsList = ["cat","car","van","impromptu","free","guess"]; // <------------ enter more words here
   // Choose a secret word randomly from secretsList
-  let secretWord = secretsList[Math.floor(Math.random() * secretsList.length)];
+  let secretword = secretsList[Math.floor(Math.random() * secretsList.length)];
 
    // You can only guess wrong 6 times (head, body, left arm, right arm, left leg, rigth leg)
   let maxWrongGuesses = 6;
@@ -15,18 +15,42 @@ $(document).ready(function() {
   let guesses = []; // All the guesses you have made
 
   let $wrongGuesses = $("#wrong-guesses");
-
-   for (let i = 0; i < secretWord.length; i++) {
+ let $fire = $("#fire")
+   for (let i = 0; i < secretword.length; i++) {
     $("#word-spaces").append(`<div id="word-space-${i}" class="word-space"></div>`);
   }
 
   //////////////////////////////
   // Check a guess
   /////////////////////////////
-  function handleGuess() {
+  function handleGuess() { 
+let value=$fire.val() 
+if (value.length === 0) {
+     
+  return true;
+}
+ if (isOkGuess(value)&&secretword.includes(value)){
+   let position=[]
+   let positionindex=0
+while(positionindex>=0&&positionindex<secretword.length){console.log(positionindex)
+ let currentposition=secretword.indexOf(value,positionindex+1)
+ if(currentposition!==-1){position.push (currentposition)}
+ positionindex=currentposition
+}position.forEach((pause)=>{
+  let space=$(`#word-space-${pause}`) 
+  space.text(value)
+  correctGuesses +=1
 
-  }
 
+})
+ 
+} else{
+  wrongGuesses +=1
+  if(wrongGuesses>maxWrongGuesses){alert("Gosh darnit Oswen you're wrong")}
+}
+if(correctGuesses>secretword.length){alert("You got a Victory Royale")}
+$fire.val("")} 
+$fire.keydown(handleGuess)
   //////////////////////////////
   // Make sure the guess is a single letter
   // '' is wrong
@@ -36,7 +60,7 @@ $(document).ready(function() {
   /////////////////////////////
   function isOkGuess(guess) {
     if (guess.length === 0) {
-      alert("You didn't guess anything!");
+     
       return false;
     }
     if (!isLetter(guess)) {
